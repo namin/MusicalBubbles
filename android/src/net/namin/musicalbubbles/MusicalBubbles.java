@@ -1,14 +1,8 @@
-package processing.test.musicalbubbles;
+package net.namin.musicalbubbles;
 
-import processing.core.*; 
-import processing.data.*; 
-import processing.opengl.*; 
+import processing.core.PApplet; 
 
-import android.view.MotionEvent; 
-import android.view.KeyEvent; 
-import android.graphics.Bitmap; 
-import java.io.*; 
-import java.util.*; 
+import android.view.MotionEvent;  
 
 public class MusicalBubbles extends PApplet {
 

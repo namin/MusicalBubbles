@@ -53,13 +53,14 @@ public boolean surfaceTouchEvent(MotionEvent event) {
 }
   
 public void addBubble() {
- Bubble bubble = new Bubble();
+ Bubble bubble = new Bubble(bubbles.length);
  bubble.drawMe();
  bubble.hearMe();
  bubbles = (Bubble[])append(bubbles, bubble);
 }
 
 class Bubble {
+  int index;
   float x,y;
   float radius;
   int linecol, fillcol;
@@ -67,7 +68,8 @@ class Bubble {
   boolean touching;
   int touchingCount;
 
-  Bubble() {
+  Bubble(int index) {
+    this.index = index;
     x = mouseX;
     y = mouseY;
     radius = random(100) + 10;
@@ -107,6 +109,13 @@ class Bubble {
 	  pd.sendBang("trigger");
   }
 
+  public void die() {
+    Bubble last = bubbles[bubbles.length-1];
+    last.index = index;
+    bubbles[index] = last;
+    bubbles = (Bubble[])shorten(bubbles);
+  }
+
   public void setTouching(boolean updatedTouching) {
     if (touching == updatedTouching) {
       return;
@@ -114,6 +123,9 @@ class Bubble {
     hearMe();
     if (updatedTouching) {
       touchingCount++;
+      if (touchingCount >= 10) {
+        die();
+      }
     } else {
       xmove = -xmove;
       ymove = -ymove;

@@ -5,6 +5,7 @@ void bg() {
 }
 
 void setup() {
+ size(320,480);
  bg();
  smooth();
  strokeWeight(1);
@@ -17,22 +18,19 @@ void draw() {
  }
 }
 
-public boolean surfaceTouchEvent(MotionEvent event) {
-  boolean ret = super.surfaceTouchEvent(event);
-  int action = event.getAction() & MotionEvent.ACTION_MASK;
-  if (action == MotionEvent.ACTION_UP) {
-    for (Bubble bubble : bubbles) {
-      bubble.setTouching(false); 
-    }
-    addBubble();
-  } else if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE) {
-    for (Bubble bubble : bubbles) {
-      bubble.updateTouching();
-    }
-  }
-  return ret;
+void mouseReleased() {
+ for (Bubble bubble : bubbles) {
+   bubble.setTouching(false);
+ }
+ addBubble();
 }
-  
+
+void mousePressed() {
+ for (Bubble bubble : bubbles) {
+   bubble.updateTouching();
+ }
+}
+
 void addBubble() {
  Bubble bubble = new Bubble();
  bubble.drawMe();

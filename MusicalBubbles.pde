@@ -56,19 +56,20 @@ class Bubble {
     touching = false;
     touchingCount = 0;
   }
-  
-  void drawMe() {
+  public void drawMe() {
     noStroke();
     fill(fillcol, 255/(touchingCount+1));
-    ellipse(x, y, radius*2, radius*2);
+    float delta = touching ? 10 : 0;
+    ellipse(x, y, (radius+delta)*2, (radius+delta)*2);
     stroke(linecol);
     noFill();
-    ellipse(x, y, 10, 10);
+    ellipse(x, y, 10+delta, 10+delta);
   }
   
-  void updateMe() {
-    x += xmove;
-    y += ymove;
+  public void updateMe() {
+    float ratio = touching ? 0.5f : 1;
+    x += xmove*ratio;
+    y += ymove*ratio;
     if (x > (width+radius)) { x = 0 - radius; }
     if (x < (0-radius)) { x = width + radius; }
     if (y > (height+radius)) { y = 0 - radius; }
@@ -76,19 +77,27 @@ class Bubble {
    
     drawMe(); 
   }
-  
-  void setTouching(boolean updatedTouching) {
+
+  public void setTouching(boolean updatedTouching) {
     if (touching == updatedTouching) {
       return;
     }
+    //hearMe();
     if (updatedTouching) {
-      touchingCount++; 
+      touchingCount++;
+    } else {
+      xmove = -xmove;
+      ymove = -ymove;
     }
     touching = updatedTouching; 
   }
-  
+
   void updateTouching() {
+    setTouching(isTouchingNow());
+  }
+
+  boolean isTouchingNow() {
     float d = dist(mouseX, mouseY, x, y);
-    setTouching((d - radius) < 0);
+    return (d - radius) < 0;
   }
 }

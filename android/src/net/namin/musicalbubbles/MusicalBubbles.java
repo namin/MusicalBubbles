@@ -10,10 +10,10 @@ public class MusicalBubbles extends PApplet {
 
   PureDataP5Android pd;
   private void initPd() {
-	pd = new PureDataP5Android(this, 44100, 0, 2);
-	int zipId = net.namin.musicalbubbles.R.raw.bubblesound;
-	pd.unpackAndOpenPatch(zipId, "bubblesound/make.pd");
-	pd.start();
+	  pd = new PureDataP5Android(this, 44100, 0, 2);
+	  int zipId = net.namin.musicalbubbles.R.raw.bubblesound;
+	  pd.unpackAndOpenPatch(zipId, "bubblesound/make.pd");
+	  pd.start();
   }
 
 Bubble[] bubbles = {};
@@ -81,16 +81,18 @@ class Bubble {
   
   public void drawMe() {
     noStroke();
-    fill(fillcol, 255/(touchingCount+1));
-    ellipse(x, y, radius*2, radius*2);
-    stroke(linecol);
-    noFill();
-    ellipse(x, y, 10, 10);
+  	fill(fillcol, 255/(touchingCount+1));
+  	float delta = touching ? 10 : 0;
+  	ellipse(x, y, (radius+delta)*2, (radius+delta)*2);
+	  stroke(linecol);
+	  noFill();
+	  ellipse(x, y, 10+delta, 10+delta);
   }
   
   public void updateMe() {
-    x += xmove;
-    y += ymove;
+    float ratio = touching ? 0.5f : 1;
+    x += xmove*ratio;
+    y += ymove*ratio;
     if (x > (width+radius)) { x = 0 - radius; }
     if (x < (0-radius)) { x = width + radius; }
     if (y > (height+radius)) { y = 0 - radius; }
@@ -100,25 +102,32 @@ class Bubble {
   }
 
   public void hearMe() {
-	pd.sendFloat("freq", 20*(110-radius)+250);
-	pd.sendFloat("volume", 1-0.1f*min(touchingCount, 10));
-	pd.sendBang("trigger");
+	  pd.sendFloat("freq", 20*(110-radius)+250);
+	  pd.sendFloat("volume", 1-0.1f*min(touchingCount, 10));
+	  pd.sendBang("trigger");
   }
 
   public void setTouching(boolean updatedTouching) {
     if (touching == updatedTouching) {
       return;
     }
+    hearMe();
     if (updatedTouching) {
       touchingCount++;
-      hearMe();
+    } else {
+      xmove = -xmove;
+      ymove = -ymove;
     }
     touching = updatedTouching; 
   }
   
-  public void updateTouching() {
-    float d = dist(mouseX, mouseY, x, y);
-    setTouching((d - radius) < 0);
+  void updateTouching() {
+	  setTouching(isTouchingNow());
+  }
+
+  boolean isTouchingNow() {
+  	float d = dist(mouseX, mouseY, x, y);
+	  return (d - radius) < 0;
   }
 }
 

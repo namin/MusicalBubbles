@@ -11,8 +11,8 @@ public class MusicalBubbles extends PApplet {
   PureDataP5Android pd;
   private void initPd() {
 	  pd = new PureDataP5Android(this, 44100, 0, 2);
-	  int zipId = net.namin.musicalbubbles.R.raw.bubblesound;
-	  pd.unpackAndOpenPatch(zipId, "bubblesound/make.pd");
+	  int zipId = net.namin.musicalbubbles.R.raw.pd;
+	  pd.unpackAndOpenPatch(zipId, "main.pd");
 	  pd.start();
   }
 
@@ -109,11 +109,16 @@ class Bubble {
 	  pd.sendBang("trigger");
   }
 
+  public void hearMeDie() {
+    pd.sendBang("kill");
+  }
+
   public void die() {
     Bubble last = bubbles[bubbles.length-1];
     last.index = index;
     bubbles[index] = last;
     bubbles = (Bubble[])shorten(bubbles);
+    hearMeDie();
   }
 
   public void setTouching(boolean updatedTouching) {

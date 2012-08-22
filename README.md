@@ -1,7 +1,7 @@
 Musical Bubbles
 ===============
 
-![icon](https://github.com/namin/MusicalBubbles/blob/master/screenshots/MusicalBubblesIcon.PNG?raw=true)
+![icon](https://raw.github.com/namin/MusicalBubblesmaster/screenshots/MusicalBubblesIcon.PNG)
 
 What?
 -----

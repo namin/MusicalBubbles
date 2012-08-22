@@ -6,9 +6,13 @@ Musical Bubbles
 What?
 -----
 
-Play with bubbles on a canvas! Click anywhere to create a new
-bubble. When finger is down, any bubble that crosses it will emit a
-sound. After each touch, a bubble fades visually and auditorily.
+An Android app! Get it from the Play Store by searching for
+[Noisy Bubbles](https://play.google.com/store/apps/details?id=net.namin.musicalbubbles).
+
+
+Play with noisy bubbles on a canvas! Click anywhere to create a new
+bubble. When finger is down, any bubble that crosses it will
+react. After each touch, a bubble fades visually and auditorily.
 
 Under the Hood
 --------------

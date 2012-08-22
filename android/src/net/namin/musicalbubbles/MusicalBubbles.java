@@ -1,10 +1,20 @@
 package net.namin.musicalbubbles;
 
+import org.puredata.android.processing.PureDataP5Android;
+
 import processing.core.PApplet; 
 
 import android.view.MotionEvent;  
 
 public class MusicalBubbles extends PApplet {
+
+  PureDataP5Android pd;
+  private void initPd() {
+	pd = new PureDataP5Android(this, 44100, 0, 2);
+	int zipId = net.namin.musicalbubbles.R.raw.bubblesound;
+	pd.unpackAndOpenPatch(zipId, "bubblesound/make.pd");
+	pd.start();
+  }
 
 Bubble[] bubbles = {};
 
@@ -13,6 +23,7 @@ public void bg() {
 }
 
 public void setup() {
+ initPd();
  bg();
  smooth();
  strokeWeight(1);
@@ -44,6 +55,7 @@ public boolean surfaceTouchEvent(MotionEvent event) {
 public void addBubble() {
  Bubble bubble = new Bubble();
  bubble.drawMe();
+ bubble.hearMe();
  bubbles = (Bubble[])append(bubbles, bubble);
 }
 
@@ -86,13 +98,20 @@ class Bubble {
    
     drawMe(); 
   }
-  
+
+  public void hearMe() {
+	pd.sendFloat("freq", 20*(110-radius)+250);
+	pd.sendFloat("volume", 1-0.1f*min(touchingCount, 10));
+	pd.sendBang("trigger");
+  }
+
   public void setTouching(boolean updatedTouching) {
     if (touching == updatedTouching) {
       return;
     }
     if (updatedTouching) {
-      touchingCount++; 
+      touchingCount++;
+      hearMe();
     }
     touching = updatedTouching; 
   }

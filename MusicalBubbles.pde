@@ -25,7 +25,7 @@ void mouseReleased() {
  addBubble();
 }
 
-void mousePressed() {
+void mouseMoved() {
  for (Bubble bubble : bubbles) {
    bubble.updateTouching();
  }

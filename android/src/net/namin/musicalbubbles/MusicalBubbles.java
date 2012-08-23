@@ -4,10 +4,58 @@ import org.puredata.android.processing.PureDataP5Android;
 
 import processing.core.PApplet; 
 
-import android.view.MotionEvent;  
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.view.MotionEvent;
 
-public class MusicalBubbles extends PApplet {
+public class MusicalBubbles extends PApplet implements SensorEventListener {
 
+  float deltaX;
+  float deltaY;
+  float deltaZ;
+  private SensorManager mSensorManager;
+  private Sensor mAccelerometer;
+  private boolean mFresh;
+  private float mLastX;
+  private float mLastY;
+  private float mLastZ;
+  @Override protected void onResume() {
+    super.onResume();
+    mFresh = true;
+    deltaX = 0.0f;
+    deltaY = 0.0f;
+    deltaZ = 0.0f;
+    mSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+    mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+    mSensorManager.registerListener(this, mAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
+  }
+  @Override protected void onPause() {
+    mSensorManager.unregisterListener(this);
+    super.onPause();
+  }
+  @Override public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+  @Override public void onSensorChanged(SensorEvent event) {
+    float x = event.values[0];
+    float y = event.values[1];
+    float z = event.values[2];
+    if (mFresh) {
+      mLastX = x;
+      mLastY = y;
+      mLastZ = z;
+      mFresh = false;
+    } else {
+      deltaX = mLastX - x;
+      deltaY = -(mLastY - y);
+      deltaZ = mLastZ - z;
+      mLastX = x;
+      mLastY = y;
+      mLastZ = z;
+    }
+  }
+  
   PureDataP5Android pd;
   private void initPd() {
 	  pd = new PureDataP5Android(this, 44100, 0, 2);
@@ -22,6 +70,10 @@ public void bg() {
  background(0);
 }
 
+public void fg() {
+ fill(255);
+}
+
 public void setup() {
  initPd();
  bg();
@@ -31,6 +83,7 @@ public void setup() {
 
 public void draw() {
  bg();
+ fg();
  for (Bubble bubble : bubbles) {
    bubble.updateMe();
  }
@@ -93,6 +146,8 @@ class Bubble {
   
   public void updateMe() {
     float ratio = touching ? 0.5f : 1;
+    xmove += deltaX * Math.sqrt(displayWidth)/100f;
+    ymove += deltaY * Math.sqrt(displayHeight)/100f;
     x += xmove*ratio;
     y += ymove*ratio;
     if (x > (width+radius)) { x = 0 - radius; }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="4" android:versionName="1.0.3" package="net.namin.musicalbubbles">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="7" android:versionName="1.0.4" package="net.namin.musicalbubbles">
   <uses-sdk android:minSdkVersion="10"/>
-  <application android:debuggable="true" android:icon="@drawable/icon" android:label="MusicalBubbles">
+  <application android:icon="@drawable/icon" android:label="MusicalBubbles">
     <activity android:name=".MusicalBubbles">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>

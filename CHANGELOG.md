@@ -1,5 +1,9 @@
 # Musical Bubbles Change Log
 
+## Version 1.0.4
+
+accelerometer-sensitive x and y speed
+
 ## Version 1.0.3
 
 updated to latest version of Processing (2.0a8)

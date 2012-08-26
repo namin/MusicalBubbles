@@ -148,6 +148,7 @@ class Bubble {
     radius += deltaZ;
     if (radius < 10) {
       radius = 10;
+      hearMe();
       die();
       return;
     }
@@ -165,27 +166,31 @@ class Bubble {
     drawMe(); 
   }
 
+  private String sel() {
+    int s = index % 4;
+    return s == 0 ? "" : (s + "");
+  }
+
   private void sendFloats() {
-    pd.sendFloat("freq", 20*(110-Math.min(radius, 110))+250);
-    pd.sendFloat("volume", 1-0.1f*min(touchingCount, 10));
+    pd.sendFloat("freq"+sel(), 20*(110-Math.min(radius, 110))+250);
+    pd.sendFloat("volume"+sel(), 1-0.1f*min(touchingCount, 10));
   }
 
   public void hearMe() {
     sendFloats();
-	  pd.sendBang("trigger");
+	  pd.sendBang("trigger"+sel());
   }
 
   public void hearMeDie() {
-    sendFloats();
-    pd.sendBang("kill");
+    pd.sendBang("kill"+sel());
   }
 
   public void die() {
+    hearMeDie();
     Bubble last = bubbles[bubbles.length-1];
     last.index = index;
     bubbles[index] = last;
     bubbles = (Bubble[])shorten(bubbles);
-    hearMeDie();
   }
 
   public void setTouching(boolean updatedTouching) {

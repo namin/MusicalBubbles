@@ -1,5 +1,11 @@
 # Musical Bubbles Change Log
 
+## Version 1.0.5
+
+acceleromter-sensitive z size
+
+polyphony
+
 ## Version 1.0.4
 
 accelerometer-sensitive x and y speed

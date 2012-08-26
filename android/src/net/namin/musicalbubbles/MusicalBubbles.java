@@ -145,6 +145,13 @@ class Bubble {
   }
   
   public void updateMe() {
+    radius += deltaZ;
+    if (radius < 10) {
+      radius = 10;
+      die();
+      return;
+    }
+
     float ratio = touching ? 0.5f : 1;
     xmove += deltaX * Math.sqrt(displayWidth)/100f;
     ymove += deltaY * Math.sqrt(displayHeight)/100f;
@@ -158,13 +165,18 @@ class Bubble {
     drawMe(); 
   }
 
+  private void sendFloats() {
+    pd.sendFloat("freq", 20*(110-Math.min(radius, 110))+250);
+    pd.sendFloat("volume", 1-0.1f*min(touchingCount, 10));
+  }
+
   public void hearMe() {
-	  pd.sendFloat("freq", 20*(110-radius)+250);
-	  pd.sendFloat("volume", 1-0.1f*min(touchingCount, 10));
+    sendFloats();
 	  pd.sendBang("trigger");
   }
 
   public void hearMeDie() {
+    sendFloats();
     pd.sendBang("kill");
   }
 

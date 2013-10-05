@@ -1,5 +1,11 @@
 # Musical Bubbles Change Log
 
+## Version 1.0.7
+
+officially change name to "Baby, Don't Cry!"
+
+multi-touch support
+
 ## Version 1.0.6
 
 change name to "Baby, Don't Cry!"

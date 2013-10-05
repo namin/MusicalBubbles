@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="9" android:versionName="1.0.6" package="org.namin.babydontcry">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="10" android:versionName="1.0.7" package="org.namin.babydontcry">
   <uses-sdk android:minSdkVersion="10"/>
-  <application android:icon="@drawable/icon" android:label="MusicalBubbles">
+  <application android:icon="@drawable/icon" android:label="Baby, Don't Cry!">
     <activity android:name=".MusicalBubbles">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>

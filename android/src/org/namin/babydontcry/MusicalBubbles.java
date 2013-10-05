@@ -1,6 +1,6 @@
 package org.namin.babydontcry;
 
-import processing.core.PApplet; 
+import processing.core.PApplet;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -53,7 +53,7 @@ public class MusicalBubbles extends PApplet implements SensorEventListener {
       mLastZ = z;
     }
   }
-  
+
   PureData pd;
   private void initPd() {
 	  pd = new PureData(this, 44100, 0, 2);
@@ -88,23 +88,29 @@ public void draw() {
 }
 
 public boolean surfaceTouchEvent(MotionEvent event) {
-  boolean ret = super.surfaceTouchEvent(event);
-  int action = event.getAction() & MotionEvent.ACTION_MASK;
-  if (action == MotionEvent.ACTION_UP) {
+  int action = event.getActionMasked();
+  int actionIndex = event.getActionIndex();
+  float mouseX = event.getX(actionIndex);
+  float mouseY = event.getY(actionIndex);
+  if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_POINTER_UP) {
+    addBubble(mouseX, mouseY);
+  } else if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_POINTER_DOWN || action == MotionEvent.ACTION_MOVE) {
     for (Bubble bubble : bubbles) {
-      bubble.setTouching(false); 
-    }
-    addBubble();
-  } else if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE) {
-    for (Bubble bubble : bubbles) {
-      bubble.updateTouching();
+      int n = event.getPointerCount();
+      float[] mouseXs = new float[n];
+      float[] mouseYs = new float[n];
+      for (int i=0; i<n; i++) {
+        mouseXs[i] = event.getX(i);
+        mouseYs[i] = event.getY(i);
+      }
+      bubble.updateTouching(mouseXs, mouseYs);
     }
   }
-  return ret;
+  return super.surfaceTouchEvent(event);
 }
-  
-public void addBubble() {
- Bubble bubble = new Bubble(bubbles.length);
+
+public void addBubble(float mouseX, float mouseY) {
+ Bubble bubble = new Bubble(bubbles.length, mouseX, mouseY);
  bubble.drawMe();
  bubble.hearMe();
  bubbles = (Bubble[])append(bubbles, bubble);
@@ -119,7 +125,7 @@ class Bubble {
   boolean touching;
   int touchingCount;
 
-  Bubble(int index) {
+  Bubble(int index, float mouseX, float mouseY) {
     this.index = index;
     x = mouseX;
     y = mouseY;
@@ -131,7 +137,7 @@ class Bubble {
     touching = false;
     touchingCount = 0;
   }
-  
+
   public void drawMe() {
     noStroke();
   	fill(fillcol, 255/(touchingCount+1));
@@ -141,7 +147,7 @@ class Bubble {
 	  noFill();
 	  ellipse(x, y, 10+delta, 10+delta);
   }
-  
+
   public void updateMe() {
     radius += deltaZ;
     if (radius < 10) {
@@ -160,8 +166,8 @@ class Bubble {
     if (x < (0-radius)) { x = width + radius; }
     if (y > (height+radius)) { y = 0 - radius; }
     if (y < (0-radius)) { y = height + radius; }
-   
-    drawMe(); 
+
+    drawMe();
   }
 
   private String sel() {
@@ -205,17 +211,22 @@ class Bubble {
       xmove = -xmove;
       ymove = -ymove;
     }
-    touching = updatedTouching; 
-  }
-  
-  void updateTouching() {
-	  setTouching(isTouchingNow());
+    touching = updatedTouching;
   }
 
-  boolean isTouchingNow() {
+  void updateTouching(float[] mouseXs, float[] mouseYs) {
+    for (int i=0; i<mouseXs.length; i++) {
+      if (isTouchingNow(mouseXs[i], mouseYs[i])) {
+        setTouching(true);
+        return;
+      }
+    }
+    setTouching(false);
+  }
+
+  boolean isTouchingNow(float mouseX, float mouseY) {
   	float d = dist(mouseX, mouseY, x, y);
-	  return (d - radius) < 0;
+	return (d - radius) < 0;
   }
 }
-
 }

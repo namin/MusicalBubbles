@@ -1,7 +1,5 @@
 package net.namin.musicalbubbles;
 
-import org.puredata.android.processing.PureDataP5Android;
-
 import processing.core.PApplet; 
 
 import android.content.Context;
@@ -56,9 +54,9 @@ public class MusicalBubbles extends PApplet implements SensorEventListener {
     }
   }
   
-  PureDataP5Android pd;
+  PureData pd;
   private void initPd() {
-	  pd = new PureDataP5Android(this, 44100, 0, 2);
+	  pd = new PureData(this, 44100, 0, 2);
 	  int zipId = net.namin.musicalbubbles.R.raw.pd;
 	  pd.unpackAndOpenPatch(zipId, "main.pd");
 	  pd.start();

@@ -7,7 +7,7 @@ What?
 -----
 
 An Android app! Get it from the Play Store by searching for
-[Noisy Bubbles](https://play.google.com/store/apps/details?id=net.namin.musicalbubbles).
+[Baby, Don't Cry](https://play.google.com/store/apps/details?id=org.namin.babydontcry).
 
 
 Play with noisy bubbles on a canvas! Click anywhere to create a new

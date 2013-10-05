@@ -1,5 +1,11 @@
 # Musical Bubbles Change Log
 
+## Version 1.0.6
+
+change name to "Baby, Don't Cry!"
+
+update to latest pd-for-android and processing versions (as of October 2013)
+
 ## Version 1.0.5
 
 acceleromter-sensitive z size

@@ -1,4 +1,4 @@
-package net.namin.musicalbubbles;
+package org.namin.babydontcry;
 
 
 import java.io.File;
@@ -15,8 +15,8 @@ import org.puredata.core.utils.IoUtils;
 import processing.core.PApplet;
 
 /**
- * libpd for Processing.
- * 
+ * libpd for Processing from https://github.com/libpd/puredatap5/blob/master/PureDataP5/src/org/puredata/processing/PureData.java
+ *
  * @author Peter Brinkmann (peter.brinkmann@gmail.com)
  */
 public class PureData implements PdReceiver, PdMidiReceiver {
@@ -407,7 +407,7 @@ public class PureData implements PdReceiver, PdMidiReceiver {
   public void receiveMidiByte(int p, int b) {
     // Do nothing; we don't support this low-level functionality in Processing.
   }
-  
+
   public int unpackAndOpenPatch(int zipId, String patchName) {
 	  File dir = parent.getFilesDir();
 	  try {

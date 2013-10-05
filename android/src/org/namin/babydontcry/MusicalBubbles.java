@@ -1,4 +1,4 @@
-package net.namin.musicalbubbles;
+package org.namin.babydontcry;
 
 import processing.core.PApplet; 
 
@@ -57,7 +57,7 @@ public class MusicalBubbles extends PApplet implements SensorEventListener {
   PureData pd;
   private void initPd() {
 	  pd = new PureData(this, 44100, 0, 2);
-	  int zipId = net.namin.musicalbubbles.R.raw.pd;
+	  int zipId = org.namin.babydontcry.R.raw.pd;
 	  pd.unpackAndOpenPatch(zipId, "main.pd");
 	  pd.start();
   }
